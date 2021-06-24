@@ -66,7 +66,7 @@
     <param name="sdf_map/obstacles_inflation"     value="0.099" /> 
     <param name="sdf_map/local_bound_inflate"    value="0.0"/>
     <param name="sdf_map/local_map_margin" value="50"/>
-    <param name="sdf_map/ground_height"        value="-1.0"/>
+    <param name="sdf_map/ground_height"        value="0.0"/>
     <!-- camera parameter -->
     <param name="sdf_map/cx" value="$(arg cx)"/>
     <param name="sdf_map/cy" value="$(arg cy)"/>
@@ -90,14 +90,15 @@
     <param name="sdf_map/max_ray_length" value="4.5"/>
 
     <param name="sdf_map/esdf_slice_height" value="0.3"/>
-    <param name="sdf_map/visualization_truncate_height"   value="2.49"/>
-    <param name="sdf_map/virtual_ceil_height"   value="2.5"/>
+    <param name="sdf_map/visualization_truncate_height"   value="2.29"/>
+    <param name="sdf_map/virtual_ceil_height"   value="2.3"/>
+
     <param name="sdf_map/show_occ_time"  value="false"/>
     <param name="sdf_map/show_esdf_time" value="false"/>
     <param name="sdf_map/pose_type"     value="1"/>  
     <param name="sdf_map/frame_id"      value="world"/>
 
-  <!-- planner manager -->
+    <!-- planner manager -->
     <param name="manager/max_vel" value="$(arg max_vel)" type="double"/>
     <param name="manager/max_acc" value="$(arg max_acc)" type="double"/>
     <param name="manager/max_jerk" value="4" type="double"/>
@@ -111,7 +112,7 @@
     <param name="manager/use_topo_path" value="false" type="bool"/>
     <param name="manager/use_optimization" value="true" type="bool"/>
 
-  <!-- kinodynamic path searching -->
+    <!-- kinodynamic path searching -->
     <param name="search/max_tau" value="0.6" type="double"/>
     <param name="search/init_max_tau" value="0.8" type="double"/>
     <param name="search/max_vel" value="$(arg max_vel)" type="double"/>
@@ -125,7 +126,7 @@
     <param name="search/allocate_num" value="100000" type="int"/>
     <param name="search/check_num" value="5" type="int"/>
 
-  <!-- trajectory optimization -->
+    <!-- trajectory optimization -->
     <param name="optimization/lambda1" value="10.0" type="double"/>
     <param name="optimization/lambda2" value="5.0" type="double"/>
     <param name="optimization/lambda3" value="0.00001" type="double"/>
