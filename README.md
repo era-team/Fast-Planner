@@ -9,19 +9,7 @@
 - __Oct 20, 2020__: Fast-Planner is extended and applied to fast autonomous exploration. Check this [repo](https://github.com/HKUST-Aerial-Robotics/FUEL) for more details.
 
 __Authors__: [Boyu Zhou](http://boyuzhou.net) and [Shaojie Shen](http://uav.ust.hk/group/) from the [HUKST Aerial Robotics Group](http://uav.ust.hk/), [Fei Gao](https://ustfei.com/) from [ZJU FAST Lab](http://www.kivact.com/).
-<!-- - __B-spline trajectory optimization guided by topological paths__:
-<p align="center">
-  <img src="https://github.com/HKUST-Aerial-Robotics/TopoTraj/blob/master/files/icra20_1.gif" width = "420" height = "237"/>
-  <img src="https://github.com/HKUST-Aerial-Robotics/TopoTraj/blob/master/files/icra20_2.gif" width = "420" height = "237"/>
-</p> -->
 
-<p align="center">
-  <img src="files/raptor1.gif" width = "400" height = "225"/>
-  <img src="files/raptor2.gif" width = "400" height = "225"/>
-  <img src="files/icra20_2.gif" width = "400" height = "225"/>
-  <img src="files/ral19_2.gif" width = "400" height = "225"/>
-  <!-- <img src="files/icra20_1.gif" width = "320" height = "180"/> -->
-</p>
 
 Complete videos: 
 [video1](https://www.youtube.com/watch?v=NvR8Lq2pmPg&feature=emb_logo),
@@ -180,10 +168,6 @@ To test this method, run:
 
 Normally, you will find the randomly generated map and the drone model in ```Rviz```. At this time, you can trigger the planner using the ```2D Nav Goal``` tool. When a point is clicked in ```Rviz```, a new trajectory will be generated immediately and executed by the drone. A sample is displayed below:
 
-<!-- add some gif here -->
- <p id="demo1" align="center">
-  <img src="files/ral19_3.gif" width = "480" height = "270"/>
- </p>
 
 Related algorithms are detailed in [this paper](https://ieeexplore.ieee.org/document/8758904).
 
@@ -201,11 +185,6 @@ Similarly, run:
 ```
 
 then you will find the random map generated and can use the ```2D Nav Goal``` to trigger the planner:
-
-<!-- add some gif here -->
- <p align="center">
-  <img src="files/icra20_3.gif" width = "480" height = "270"/>
- </p>
 
 Related algorithms are detailed in [this paper](https://arxiv.org/abs/1912.12644).
 
