@@ -10,7 +10,6 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   visualization_msgs
   plan_env
-  cv_bridge
 )
 
 

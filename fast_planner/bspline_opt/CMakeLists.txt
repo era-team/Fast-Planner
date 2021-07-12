@@ -9,10 +9,8 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   visualization_msgs
-  cv_bridge
   nlopt
   plan_env
-  nlopt
 )
 
 catkin_package(

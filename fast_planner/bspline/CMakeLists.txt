@@ -10,8 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   visualization_msgs
   plan_env
-  cv_bridge
-)
+  )
 
 catkin_package(
  INCLUDE_DIRS include
