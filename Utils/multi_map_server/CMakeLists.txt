@@ -90,7 +90,7 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
+add_message_files(DIRECTORY msg
    FILES
    MultiOccupancyGrid.msg
    MultiSparseMap3D.msg
@@ -132,7 +132,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES irobot_msgs
-   CATKIN_DEPENDS geometry_msgs nav_msgs quadrotor_msgs
+   CATKIN_DEPENDS message_runtime geometry_msgs nav_msgs quadrotor_msgs
 #  DEPENDS system_lib
 )
 
@@ -161,6 +161,8 @@ add_executable(multi_map_visualization src/multi_map_visualization.cc)
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
 add_dependencies(multi_map_visualization multi_map_server_messages_cpp)
+
+# add_dependencies(multi_map_visualization ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(multi_map_visualization 
