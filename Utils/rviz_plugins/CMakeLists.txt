@@ -3,6 +3,8 @@ project(rviz_plugins)
 
 add_compile_options(-std=c++11)
 
+cmake_policy(SET CMP0054 NEW)
+
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rviz

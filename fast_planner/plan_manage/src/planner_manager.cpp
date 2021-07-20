@@ -481,7 +481,7 @@ void FastPlannerManager::optimizeTopoBspline(double start_t, double duration,
   guide_pt.erase(guide_pt.begin(), guide_pt.begin() + 2);
 
   // std::cout << "guide pt num: " << guide_pt.size() << std::endl;
-  if (guide_pt.size() != int(ctrl_pts.rows()) - 6) ROS_WARN("what guide");
+  if (guide_pt.size() != (unsigned int)(ctrl_pts.rows()) - 6) ROS_WARN("what guide");
 
   tm1 = (ros::Time::now() - t1).toSec();
   t1  = ros::Time::now();

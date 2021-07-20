@@ -29,7 +29,7 @@
 namespace fast_planner {
 /* ============================== obj history_ ============================== */
 
-int ObjHistory::queue_size_;
+size_t ObjHistory::queue_size_;
 int ObjHistory::skip_num_;
 ros::Time ObjHistory::global_start_time_;
 

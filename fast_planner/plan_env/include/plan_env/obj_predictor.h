@@ -96,7 +96,7 @@ public:
 class ObjHistory {
 public:
   static int skip_num_;
-  static int queue_size_;
+  static size_t queue_size_;
   static ros::Time global_start_time_;
 
   ObjHistory() {

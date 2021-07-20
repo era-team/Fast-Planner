@@ -178,7 +178,7 @@ void BsplineOptimizer::optimize() {
     // time_start_ = ros::Time::now();
 
     double        final_cost;
-    nlopt::result result = opt.optimize(q, final_cost);
+    opt.optimize(q, final_cost);
 
     /* retrieve the optimization result */
     // cout << "Min cost:" << min_cost_ << endl;
