@@ -330,12 +330,12 @@ AerialMapDisplay::update(float wall_dt, float ros_dt)
   }
 
   // Expand it to be RGB data
-  unsigned int   pixels_size = width * height * 3;
+  size_t   pixels_size = width * height * 3;
   unsigned char* pixels      = new unsigned char[pixels_size];
   memset(pixels, 255, pixels_size);
 
   bool         map_status_set     = false;
-  unsigned int num_pixels_to_copy = pixels_size;
+  size_t num_pixels_to_copy = pixels_size;
   if (pixels_size != current_map_->data.size())
   {
     std::stringstream ss;
@@ -356,7 +356,7 @@ AerialMapDisplay::update(float wall_dt, float ros_dt)
   // TODO: a fragment shader could do this on the video card, and
   // would allow a non-grayscale color to mark the out-of-range
   // values.
-  for (unsigned int pixel_index = 0; pixel_index < num_pixels_to_copy;
+  for (size_t pixel_index = 0; pixel_index < num_pixels_to_copy;
        pixel_index++)
   {
     /*

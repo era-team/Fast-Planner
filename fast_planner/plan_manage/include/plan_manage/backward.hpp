@@ -1232,7 +1232,7 @@ private:
     bool found;
     const char* filename;
     const char* funcname;
-    unsigned int line;
+    size_t line;
   };
 
   struct find_sym_context {

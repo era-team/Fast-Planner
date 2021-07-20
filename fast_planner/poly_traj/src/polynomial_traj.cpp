@@ -198,16 +198,16 @@ PolynomialTraj minSnapTraj(const Eigen::MatrixXd& Pos, const Eigen::Vector3d& st
 PolynomialTraj fastLine4deg(Eigen::Vector3d start, Eigen::Vector3d end, double max_vel, double max_acc,
                             double max_jerk) {
   Eigen::Vector3d disp = end - start;
-  double len = disp.norm();
-  Eigen::Vector3d dir = disp.normalized();
+//   double len = disp.norm();
+//   Eigen::Vector3d dir = disp.normalized();
 
   // get scale vector
-  int max_id = -1;
+//   int max_id = -1;
   double max_dist = -1.0;
   for (int i = 0; i < 3; ++i) {
     if (fabs(disp(i)) > max_dist) {
       max_dist = disp(i);
-      max_id = i;
+    //   max_id = i;
     }
   }
   Eigen::Vector3d scale_vec = disp / max_dist;

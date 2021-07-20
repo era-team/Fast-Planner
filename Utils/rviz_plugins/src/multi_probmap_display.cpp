@@ -122,10 +122,10 @@ void MultiProbMapDisplay::updateDrawUnder()
 {
   bool draw_under = draw_under_property_->getValue().toBool();
 
-  for (unsigned int k = 0; k < material_.size(); k++)
+  for (size_t k = 0; k < material_.size(); k++)
     material_[k]->setDepthWriteEnabled( !draw_under );
 
-  for (unsigned int k = 0; k < manual_object_.size(); k++)
+  for (size_t k = 0; k < manual_object_.size(); k++)
   {
     if( draw_under )
       manual_object_[k]->setRenderQueueGroup( Ogre::RENDER_QUEUE_4 );
@@ -181,7 +181,7 @@ void MultiProbMapDisplay::update( float wall_dt, float ros_dt )
   
   //ros::Time t[5];
   //double dt[4] = {0,0,0,0};
-  for (unsigned int k = 0; k < current_map_->maps.size(); k++)
+  for (size_t k = 0; k < current_map_->maps.size(); k++)
   {
     if (current_map_->maps[k].data.empty())
       continue;    
@@ -194,14 +194,14 @@ void MultiProbMapDisplay::update( float wall_dt, float ros_dt )
     
     // Load pixel
     //t[0] = ros::Time::now(); 
-    unsigned int pixels_size = width * height;
+    size_t pixels_size = width * height;
     unsigned char* pixels = new unsigned char[pixels_size];
     memset(pixels, 255, pixels_size);
-    unsigned int num_pixels_to_copy = pixels_size;
+    size_t num_pixels_to_copy = pixels_size;
     if( pixels_size != current_map_->maps[k].data.size() )
       if( current_map_->maps[k].data.size() < pixels_size )
         num_pixels_to_copy = current_map_->maps[k].data.size();
-    for( unsigned int pixel_index = 0; pixel_index < num_pixels_to_copy; pixel_index++ )
+    for( size_t pixel_index = 0; pixel_index < num_pixels_to_copy; pixel_index++ )
     {
       unsigned char val;
       int8_t data = current_map_->maps[k].data[ pixel_index ];     

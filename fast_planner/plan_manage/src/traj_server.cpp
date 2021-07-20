@@ -131,11 +131,11 @@ void bsplineCallback(plan_manage::BsplineConstPtr msg) {
   Eigen::MatrixXd pos_pts(msg->pos_pts.size(), 3);
 
   Eigen::VectorXd knots(msg->knots.size());
-  for (int i = 0; i < msg->knots.size(); ++i) {
+  for (size_t i = 0; i < msg->knots.size(); ++i) {
     knots(i) = msg->knots[i];
   }
 
-  for (int i = 0; i < msg->pos_pts.size(); ++i) {
+  for (size_t i = 0; i < msg->pos_pts.size(); ++i) {
     pos_pts(i, 0) = msg->pos_pts[i].x;
     pos_pts(i, 1) = msg->pos_pts[i].y;
     pos_pts(i, 2) = msg->pos_pts[i].z;
@@ -147,7 +147,7 @@ void bsplineCallback(plan_manage::BsplineConstPtr msg) {
   // parse yaw traj
 
   Eigen::MatrixXd yaw_pts(msg->yaw_pts.size(), 1);
-  for (int i = 0; i < msg->yaw_pts.size(); ++i) {
+  for (size_t i = 0; i < msg->yaw_pts.size(); ++i) {
     yaw_pts(i, 0) = msg->yaw_pts[i];
   }
 
@@ -254,7 +254,7 @@ void cmdCallback(const ros::TimerEvent& e) {
   cmd.yaw = yaw;
   cmd.yaw_dot = yawdot;
 
-  auto pos_err = pos_f - pos;
+//   auto pos_err = pos_f - pos;
   // if (pos_err.norm() > 1e-3) {
   //   cmd.yaw = atan2(pos_err(1), pos_err(0));
   // } else {

@@ -178,7 +178,7 @@ void PlanningVisualization::drawBsplinesPhase1(vector<NonUniformBspline>& bsplin
   }
   last_bspline_phase1_num_ = bsplines.size();
 
-  for (int i = 0; i < bsplines.size(); ++i) {
+  for (size_t i = 0; i < bsplines.size(); ++i) {
     drawBspline(bsplines[i], size, getColor(double(i) / bsplines.size(), 0.2), false, 2 * size,
                 getColor(double(i) / bsplines.size()), i, i);
   }
@@ -193,7 +193,7 @@ void PlanningVisualization::drawBsplinesPhase2(vector<NonUniformBspline>& bsplin
   }
   last_bspline_phase2_num_ = bsplines.size();
 
-  for (int i = 0; i < bsplines.size(); ++i) {
+  for (size_t i = 0; i < bsplines.size(); ++i) {
     drawBspline(bsplines[i], size, getColor(double(i) / bsplines.size(), 0.3), false, 1.5 * size,
                 getColor(double(i) / bsplines.size()), 50 + i, 50 + i);
   }
@@ -254,7 +254,7 @@ void PlanningVisualization::drawTopoGraph(list<GraphNode::Ptr>& graph, double po
   /* draw graph edge */
   vector<Eigen::Vector3d> edge_pt1, edge_pt2;
   for (list<GraphNode::Ptr>::iterator iter = graph.begin(); iter != graph.end(); ++iter) {
-    for (int k = 0; k < (*iter)->neighbors_.size(); ++k) {
+    for (size_t k = 0; k < (*iter)->neighbors_.size(); ++k) {
 
       edge_pt1.push_back((*iter)->pos_);
       edge_pt2.push_back((*iter)->neighbors_[k]->pos_);
@@ -276,10 +276,10 @@ void PlanningVisualization::drawTopoPathsPhase2(vector<vector<Eigen::Vector3d>>&
   last_topo_path1_num_ = paths.size();
 
   // draw new paths
-  for (int i = 0; i < paths.size(); ++i) {
+  for (size_t i = 0; i < paths.size(); ++i) {
     vector<Eigen::Vector3d> edge_pt1, edge_pt2;
 
-    for (int j = 0; j < paths[i].size() - 1; ++j) {
+    for (size_t j = 0; j < paths[i].size() - 1; ++j) {
       edge_pt1.push_back(paths[i][j]);
       edge_pt2.push_back(paths[i][j + 1]);
     }
@@ -300,10 +300,10 @@ void PlanningVisualization::drawTopoPathsPhase1(vector<vector<Eigen::Vector3d>>&
   last_topo_path2_num_ = paths.size();
 
   // draw new paths
-  for (int i = 0; i < paths.size(); ++i) {
+  for (size_t i = 0; i < paths.size(); ++i) {
     vector<Eigen::Vector3d> edge_pt1, edge_pt2;
 
-    for (int j = 0; j < paths[i].size() - 1; ++j) {
+    for (size_t j = 0; j < paths[i].size() - 1; ++j) {
       edge_pt1.push_back(paths[i][j]);
       edge_pt2.push_back(paths[i][j + 1]);
     }
@@ -338,7 +338,7 @@ void PlanningVisualization::drawPrediction(ObjPrediction pred, double resolution
   const double range      = 5.6;
 
   vector<Eigen::Vector3d> traj;
-  for (int i = 0; i < pred->size(); i++) {
+  for (size_t i = 0; i < pred->size(); i++) {
 
     PolynomialPrediction poly = pred->at(i);
     if (!poly.valid()) continue;
@@ -372,7 +372,7 @@ void PlanningVisualization::drawYawPath(NonUniformBspline& pos, const vector<dou
                                         const double& dt) {
   vector<Eigen::Vector3d> pts1, pts2;
 
-  for (int i = 0; i < yaw.size(); ++i) {
+  for (size_t i = 0; i < yaw.size(); ++i) {
     Eigen::Vector3d pc = pos.evaluateDeBoorT(i * dt);
     pc[2] += 0.3;
     Eigen::Vector3d dir(cos(yaw[i]), sin(yaw[i]), 0);

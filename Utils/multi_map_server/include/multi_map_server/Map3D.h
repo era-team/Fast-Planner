@@ -72,7 +72,7 @@ public:
     y = msg.y;
     updateCounter = 0;
     grids.clear();
-    for (unsigned int k = 0; k < msg.mass.size(); k++)
+    for (size_t k = 0; k < msg.mass.size(); k++)
     {
       OccupancyGrid c;
       c.upper = msg.upper[k];
@@ -329,7 +329,7 @@ public:
     updateCounter = _map3d.updateCounter;
     updateList = _map3d.updateList;
     mapBase = _map3d.mapBase;
-    for (unsigned int k = 0; k < mapBase.size(); k++)
+    for (size_t k = 0; k < mapBase.size(); k++)
     {
       if (mapBase[k])
       {
@@ -347,7 +347,7 @@ public:
 
   ~Map3D() 
   {
-    for (unsigned int k = 0; k < mapBase.size(); k++)
+    for (size_t k = 0; k < mapBase.size(); k++)
     {
       if (mapBase[k])
       {
@@ -372,7 +372,7 @@ public:
     msg.info.origin.orientation = tf::createQuaternionMsgFromYaw(0.0);  
     // Pack columns into message
     msg.lists.clear();
-    for (unsigned int k = 0; k < updateList.size(); k++)
+    for (size_t k = 0; k < updateList.size(); k++)
     {
       multi_map_server::VerticalOccupancyGridList c;
       updateList[k]->PackMsg(c);
@@ -385,7 +385,7 @@ public:
   void UnpackMsg(const multi_map_server::SparseMap3D &msg)
   {
     // Unpack column msgs, Replace the whole column
-    for (unsigned int k = 0; k < msg.lists.size(); k++)
+    for (size_t k = 0; k < msg.lists.size(); k++)
     {
       int mx, my, mz;
       WorldFrameToMapFrame(msg.lists[k].x, msg.lists[k].y, 0, mx, my, mz);
@@ -461,7 +461,7 @@ public:
         {
           vector<OccupancyGrid> grids;
           mapBase[my*mapX+mx]->GetOccupancyGrids(grids);
-          for (unsigned int k = 0; k < grids.size(); k++)
+          for (size_t k = 0; k < grids.size(); k++)
           {
             if  ( (grids[k].mass / (grids[k].upper - grids[k].lower + 1) > logOddOccupiedThr && type == OCCUPIED) || 
                   (grids[k].mass / (grids[k].upper - grids[k].lower + 1) < logOddFreeThr     && type == FREE) )

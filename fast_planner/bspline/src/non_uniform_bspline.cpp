@@ -183,7 +183,7 @@ bool NonUniformBspline::checkFeasibility(bool show) {
     }
   }
 
-  double ratio = max(max_vel / limit_vel_, sqrt(fabs(max_acc) / limit_acc_));
+//   double ratio = max(max_vel / limit_vel_, sqrt(fabs(max_acc) / limit_acc_));
 
   return fea;
 }

@@ -46,7 +46,6 @@ int Astar::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt, bool dynamic
 
   Eigen::Vector3d end_state(6);
   Eigen::Vector3i end_index;
-  double time_to_goal;
 
   end_index = posToIndex(end_pt);
   cur_node->f_score = lambda_heu_ * getEuclHeu(cur_node->position, end_pt);
@@ -64,7 +63,7 @@ int Astar::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt, bool dynamic
   } else
     expanded_nodes_.insert(cur_node->index, cur_node);
 
-  NodePtr neighbor = NULL;
+//   NodePtr neighbor = NULL;
   NodePtr terminate_node = NULL;
 
   /* ---------- search loop ---------- */
@@ -150,7 +149,7 @@ int Astar::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt, bool dynamic
           }
 
           /* ---------- compute cost ---------- */
-          double time_to_goal, tmp_g_score, tmp_f_score;
+          double tmp_g_score, tmp_f_score;
           tmp_g_score = d_pos.squaredNorm() + cur_node->g_score;
           tmp_f_score = tmp_g_score + lambda_heu_ * getEuclHeu(pro_pos, end_pt);
 
@@ -227,7 +226,7 @@ void Astar::retrievePath(NodePtr end_node) {
 
 std::vector<Eigen::Vector3d> Astar::getPath() {
   vector<Eigen::Vector3d> path;
-  for (int i = 0; i < path_nodes_.size(); ++i) {
+  for (size_t i = 0; i < path_nodes_.size(); ++i) {
     path.push_back(path_nodes_[i]->position);
   }
   return path;
@@ -325,7 +324,7 @@ Eigen::Vector3i Astar::posToIndex(Eigen::Vector3d pt) {
 }
 
 int Astar::timeToIndex(double time) {
-  int idx = floor((time - time_origin_) * inv_time_resolution_);
+  return floor((time - time_origin_) * inv_time_resolution_);
 }
 
 }  // namespace fast_planner

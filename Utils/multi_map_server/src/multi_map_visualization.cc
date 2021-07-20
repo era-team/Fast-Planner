@@ -19,14 +19,14 @@ void maps2d_callback(const multi_map_server::MultiOccupancyGrid::ConstPtr &msg)
 {
   // Merge map
   maps2d.resize(msg->maps.size(), Map2D(4));
-  for (unsigned int k = 0; k < msg->maps.size(); k++)
+  for (size_t k = 0; k < msg->maps.size(); k++)
     maps2d[k].Replace(msg->maps[k]);
   origins2d = msg->origins;    
   // Assemble and publish map
   multi_map_server::MultiOccupancyGrid m;
   m.maps.resize(maps2d.size());
   m.origins.resize(maps2d.size());
-  for (unsigned int k = 0; k < maps2d.size(); k++)
+  for (size_t k = 0; k < maps2d.size(); k++)
   {
     m.maps[k]    = maps2d[k].GetMap();
     m.origins[k] = origins2d[k];
@@ -38,12 +38,12 @@ void maps3d_callback(const multi_map_server::MultiSparseMap3D::ConstPtr &msg)
 {
   // Update incremental map
   maps3d.resize(msg->maps.size());  
-  for (unsigned int k = 0; k < msg->maps.size(); k++)
+  for (size_t k = 0; k < msg->maps.size(); k++)
     maps3d[k].UnpackMsg(msg->maps[k]);
   origins3d = msg->origins;
   // Publish
   sensor_msgs::PointCloud m;
-  for (unsigned int k = 0; k < msg->maps.size(); k++)
+  for (size_t k = 0; k < msg->maps.size(); k++)
   {
     colvec po(6);
     po(0) = origins3d[k].position.x;
@@ -58,7 +58,7 @@ void maps3d_callback(const multi_map_server::MultiSparseMap3D::ConstPtr &msg)
     colvec tpo = po.rows(0,2);
     mat    Rpo = ypr_to_R(po.rows(3,5));
     vector<colvec> pts = maps3d[k].GetOccupancyWorldFrame(OCCUPIED);
-    for (unsigned int i = 0; i < pts.size(); i++)
+    for (size_t i = 0; i < pts.size(); i++)
     {
       colvec pt = Rpo * pts[i] + tpo;
       geometry_msgs::Point32 _pt;

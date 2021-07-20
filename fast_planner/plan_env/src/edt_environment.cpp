@@ -63,7 +63,7 @@ double EDTEnvironment::distToBox(int idx, const Eigen::Vector3d& pos, const doub
 
 double EDTEnvironment::minDistToAllBox(const Eigen::Vector3d& pos, const double& time) {
   double dist = 10000000.0;
-  for (int i = 0; i < obj_prediction_->size(); i++) {
+  for (size_t i = 0; i < obj_prediction_->size(); i++) {
     double di = distToBox(i, pos, time);
     if (di < dist) dist = di;
   }
@@ -102,6 +102,8 @@ pair<double, Eigen::Vector3d> EDTEnvironment::interpolateTrilinear(double values
   grad[0] += diff[2] * (1 - diff[1]) * (values[1][0][1] - values[0][0][1]);
   grad[0] += diff[2] * diff[1] * (values[1][1][1] - values[0][1][1]);
   grad[0] *= resolution_inv_;
+
+  return std::make_pair(value, grad);
 }
 
 pair<double, Eigen::Vector3d> EDTEnvironment::evaluateEDTWithGrad(const Eigen::Vector3d& pos,
@@ -114,7 +116,7 @@ pair<double, Eigen::Vector3d> EDTEnvironment::evaluateEDTWithGrad(const Eigen::V
   double dists[2][2][2];
   getSurroundDistance(sur_pts, dists);
 
-  interpolateTrilinear(dists, diff, dist, grad);
+  return interpolateTrilinear(dists, diff, dist, grad);
 }
 
 double EDTEnvironment::evaluateCoarseEDT(Eigen::Vector3d& pos, double time) {

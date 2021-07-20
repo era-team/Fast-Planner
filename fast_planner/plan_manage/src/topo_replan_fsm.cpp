@@ -216,7 +216,7 @@ void TopoReplanFSM::execFSMCallback(const ros::TimerEvent& e) {
 
       } else {
         LocalTrajData*  info      = &planner_manager_->local_data_;
-        Eigen::Vector3d start_pos = info->start_pos_;
+        // Eigen::Vector3d start_pos = info->start_pos_;
         t_cur                     = (time_now - info->start_time_).toSec();
 
         if (t_cur > replan_time_threshold_) {
@@ -296,7 +296,7 @@ void TopoReplanFSM::checkCollisionCallback(const ros::TimerEvent& e) {
 
     if (dist <= 0.3) {
       /* try to find a max distance goal around */
-      bool         new_goal = false;
+    //   bool         new_goal = false;
       const double dr = 0.5, dtheta = 30, dz = 0.3;
 
       double          new_x, new_y, new_z, max_dist = -1.0;

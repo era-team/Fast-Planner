@@ -204,7 +204,7 @@ void BsplineOptimizer::calcSmoothnessCost(const vector<Eigen::Vector3d>& q, doub
   std::fill(gradient.begin(), gradient.end(), zero);
   Eigen::Vector3d jerk, temp_j;
 
-  for (int i = 0; i < q.size() - order_; i++) {
+  for (size_t i = 0; i < q.size() - order_; i++) {
     /* evaluate jerk */
     jerk = q[i + 3] - 3 * q[i + 2] + 3 * q[i + 1] - q[i];
     cost += jerk.squaredNorm();
@@ -255,7 +255,7 @@ void BsplineOptimizer::calcFeasibilityCost(const vector<Eigen::Vector3d>& q, dou
   ts_inv4 = ts_inv2 * ts_inv2;
 
   /* velocity feasibility */
-  for (int i = 0; i < q.size() - 1; i++) {
+  for (size_t i = 0; i < q.size() - 1; i++) {
     Eigen::Vector3d vi = q[i + 1] - q[i];
 
     for (int j = 0; j < 3; j++) {
@@ -271,7 +271,7 @@ void BsplineOptimizer::calcFeasibilityCost(const vector<Eigen::Vector3d>& q, dou
   }
 
   /* acceleration feasibility */
-  for (int i = 0; i < q.size() - 2; i++) {
+  for (size_t i = 0; i < q.size() - 2; i++) {
     Eigen::Vector3d ai = q[i + 2] - 2 * q[i + 1] + q[i];
 
     for (int j = 0; j < 3; j++) {
@@ -317,7 +317,7 @@ void BsplineOptimizer::calcWaypointsCost(const vector<Eigen::Vector3d>& q, doubl
   Eigen::Vector3d q1, q2, q3, dq;
 
   // for (auto wp : waypoints_) {
-  for (int i = 0; i < waypoints_.size(); ++i) {
+  for (size_t i = 0; i < waypoints_.size(); ++i) {
     Eigen::Vector3d waypt = waypoints_[i];
     int             idx   = waypt_idx_[i];
 
