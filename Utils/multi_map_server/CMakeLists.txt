@@ -54,7 +54,7 @@ include_directories(
 
 add_executable(multi_map_visualization src/multi_map_visualization.cc)
 
-add_dependencies(multi_map_visualization multi_map_server_messages_cpp)
+add_dependencies(multi_map_visualization multi_map_server_generate_messages_cpp)
 
 target_link_libraries(multi_map_visualization 
    ${catkin_LIBRARIES}
