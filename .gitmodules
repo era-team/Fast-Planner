@@ -1,0 +1,4 @@
+[submodule "nlopt"]
+	path = nlopt
+	url = https://github.com/stevengj/nlopt.git
+	branch = master
