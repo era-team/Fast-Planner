@@ -28,13 +28,18 @@ include_directories(
     ${PCL_INCLUDE_DIRS}
 )
 
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -O3 -Wno-sign-compare -Wno-maybe-uninitialized -Wall")
+set(CMAKE_CXX_FLAGS "-std=c++14 ${CMAKE_CXX_FLAGS} -O3 -Wno-sign-compare -Wno-maybe-uninitialized -Wall")
 
 add_library( path_searching 
     src/kinodynamic_astar.cpp 
     src/astar.cpp
     src/topo_prm.cpp
     )
+
+find_package(OpenCV)
+include_directories(${OpenCV_INCLUDE_DIRS})
+
 target_link_libraries( path_searching
+    ${OpenCV_LIBRARIES}
     ${catkin_LIBRARIES} 
     )  

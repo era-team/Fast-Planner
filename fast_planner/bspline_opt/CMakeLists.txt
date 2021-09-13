@@ -9,7 +9,6 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   visualization_msgs
-  nlopt
   plan_env
 )
 
@@ -26,15 +25,20 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
     ${Eigen3_INCLUDE_DIRS} 
     ${PCL_INCLUDE_DIRS}
-    ${nlopt_INCLUDE_DIRS}
 )
 
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -O3 -Wall")
+set(CMAKE_CXX_FLAGS "-std=c++14 ${CMAKE_CXX_FLAGS} -O3 -Wall")
 
 add_library( bspline_opt 
     src/bspline_optimizer.cpp 
     )
+
+find_package(OpenCV)
+include_directories(${OpenCV_INCLUDE_DIRS})
+
 target_link_libraries( bspline_opt
     ${catkin_LIBRARIES} 
-    ${nlopt_LIBRARIES}
+    ${OpenCV_LIBRARIES}
+    ${bspline_opt}
+    nlopt
     )  
