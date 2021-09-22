@@ -34,7 +34,6 @@
 #include <std_msgs/Empty.h>
 #include <vector>
 #include <visualization_msgs/Marker.h>
-
 #include <bspline_opt/bspline_optimizer.h>
 #include <path_searching/kinodynamic_astar.h>
 #include <plan_env/edt_environment.h>
@@ -85,6 +84,10 @@ private:
   double no_replan_thresh_, replan_thresh_;
   double waypoints_[50][3];
   int waypoint_num_;
+  
+  // Блокировка высоты
+  bool use_height_lock_;
+  double height_lock_;
 
   /* planning data */
   bool trigger_, have_target_, have_odom_;
