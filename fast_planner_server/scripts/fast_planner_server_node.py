@@ -2,6 +2,7 @@
 # coding=utf-8
 
 import rospy
+from std_msgs.msg import Bool
 from actionlib import SimpleActionServer
 from geometry_msgs.msg import PoseStamped
 from quadrotor_msgs.msg import PositionCommand
@@ -75,6 +76,15 @@ class FastPlannerActionServer:
         """Callback отмены цели"""
         self.server.set_preempted()
 
+    def remapper_mode_cb(self, msg: Bool):
+        """Callback включения/выключения режима пересылки сообщений
+
+        Args:
+            msg (Bool): включить режим или нет
+        """
+        # Задаем режим remapper'а
+        self.remapper_mode = msg.data
+
     def timer_cb(self, event):
         """Callback таймера удержания высоты
 
@@ -85,10 +95,11 @@ class FastPlannerActionServer:
         # - нет активной цели
         # - дрон находится в воздухе
         # - включен режим удержания высоты
-        if not (self.server.is_active() and self.drone.is_landed):
-            if self.enable_althold:
-                # Удерживаем высоту
-                self.drone.take_altitude(self.altitude)
+        if not self.remapper_mode:
+            if not (self.server.is_active() and self.drone.is_landed):
+                if self.enable_althold:
+                    # Удерживаем высоту
+                    self.drone.take_altitude(self.altitude)
 
     def track_error(self, goal_dist):
         """Отслеживает накопление ошибки
@@ -111,32 +122,38 @@ class FastPlannerActionServer:
         Args:
             traj_msg (quadrotor_msgs.msg.PositionCommand): точка траектории и скорость в ней
         """
-        # Если цель получена и не отменена
-        if self.server.is_active() and not self.server.is_preempt_requested():
+        if self.remapper_mode:  # Если включен режим пересылки
             # Сохраняем полученное сообщение точки траектории
             self.traj_msg = traj_msg
-            # Проверяем достиг ли дрон цели
-            goal_dist = self.drone.distance_2d(self.goal.pose.position)
-            reach_goal = goal_dist <= self.goal_min_dist
-            # Проверяем произошла ли ошибка
-            is_error = self.track_error(goal_dist)
-            # Проверяем достижение цели
-            if reach_goal:  # Если достиг цели
-                self._result.success = True
-                self.server.set_succeeded(self._result)
-            elif is_error:  # Если произошла ошибка
-                self._result.success = False
-                self.server.set_succeeded(self._result)
-            else:  # Летим в штатном режиме
-                # Публикуем feedback
-                self._feedback.goal_distance = goal_dist
-                self.server.publish_feedback(self._feedback)
-                # Отправляем точку дрону
-                self.send_traj_point()
-            # Запоминаем расстояние до цели
-            self.old_goal_dist = goal_dist
-            # Обновляем значение предыдущего положения
-            self.old_pos = traj_msg.position
+            # Отправляем точку дрону
+            self.send_traj_point()
+        else:
+            # Если цель получена и не отменена
+            if self.server.is_active() and not self.server.is_preempt_requested():
+                # Сохраняем полученное сообщение точки траектории
+                self.traj_msg = traj_msg
+                # Проверяем достиг ли дрон цели
+                goal_dist = self.drone.distance_2d(self.goal.pose.position)
+                reach_goal = goal_dist <= self.goal_min_dist
+                # Проверяем произошла ли ошибка
+                is_error = self.track_error(goal_dist)
+                # Проверяем достижение цели
+                if reach_goal:  # Если достиг цели
+                    self._result.success = True
+                    self.server.set_succeeded(self._result)
+                elif is_error:  # Если произошла ошибка
+                    self._result.success = False
+                    self.server.set_succeeded(self._result)
+                else:  # Летим в штатном режиме
+                    # Публикуем feedback
+                    self._feedback.goal_distance = goal_dist
+                    self.server.publish_feedback(self._feedback)
+                    # Отправляем точку дрону
+                    self.send_traj_point()
+                # Запоминаем расстояние до цели
+                self.old_goal_dist = goal_dist
+                # Обновляем значение предыдущего положения
+                self.old_pos = traj_msg.position
 
     def __init__(self):
         # Загружаем параметры
@@ -162,6 +179,10 @@ class FastPlannerActionServer:
         self.pos_cmd_sub = rospy.Subscriber(
             "/planning/pos_cmd", PositionCommand, self.trajectory_cb
         )
+
+        # Режим пересылки сообщений - в нем action server тупо пересылает pos_cmd
+        self.remapper_mode = False
+        self.remapper_mode_sub = rospy.Subscriber("~set_remapper_mode", Bool, self.remapper_mode_cb)
 
         # Запускаем action-server
         self.server.start()
