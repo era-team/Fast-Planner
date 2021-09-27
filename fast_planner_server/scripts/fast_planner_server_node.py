@@ -51,6 +51,8 @@ class FastPlannerActionServer:
         self.error_dist_threshold = 0.01
 
     def send_traj_point(self):
+        # TODO: Добавить параметр holonomic
+
         """Отправляет точку траектории дрону"""
         self.drone.take_pos(
             self.traj_msg.position.x,
@@ -58,6 +60,12 @@ class FastPlannerActionServer:
             self.traj_msg.position.z,
             self.traj_msg.yaw,
         )
+
+        # self.drone.take_position(
+        #     self.traj_msg.position.x,
+        #     self.traj_msg.position.y,
+        #     self.traj_msg.position.z,
+        # )
 
     def goal_cb(self):
         """Callback при получении точки цели"""
@@ -140,9 +148,11 @@ class FastPlannerActionServer:
                 # Проверяем достижение цели
                 if reach_goal:  # Если достиг цели
                     self._result.success = True
+                    self._result.error = False
                     self.server.set_succeeded(self._result)
                 elif is_error:  # Если произошла ошибка
                     self._result.success = False
+                    self._result.error = True
                     self.server.set_succeeded(self._result)
                 else:  # Летим в штатном режиме
                     # Публикуем feedback
