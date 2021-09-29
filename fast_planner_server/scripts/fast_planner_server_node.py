@@ -84,7 +84,7 @@ class FastPlannerActionServer:
         """Callback отмены цели"""
         self.server.set_preempted()
 
-    def remapper_mode_cb(self, msg: Bool):
+    def remapper_mode_cb(self, msg):
         """Callback включения/выключения режима пересылки сообщений
 
         Args:
