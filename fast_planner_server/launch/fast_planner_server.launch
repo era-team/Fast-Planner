@@ -1,21 +1,23 @@
 <launch>
 
-  <arg name="enable_althold" default="True"/>  
+  <!-- Удерживать высоту или нет -->
+  <arg name="enable_althold" default="True"/>
+  <!-- Удерживаемая высота -->
   <arg name="altitude" default="1.5"/>
+  <!-- Тип автопилота -->
+  <arg name="ap_type" default="1"/>
 
   <!--Размер карты -->
   <arg name="map_size_x" default="100.0"/>
   <arg name="map_size_y" default="100.0"/>
   <arg name="map_size_z" default=" 3.0"/>
-  
-  <!-- Переменная среды для nlopt -->
-  <env name="LD_LIBRARY_PATH" value="/usr/local/lib:$(env LD_LIBRARY_PATH)" />
 
-  <!-- Топик одометрии -->
-  <!-- Для PX4 -->
-  <arg name="odom_topic" value="/mavros/odometry/in" />
+  <!-- Топик одометрии -->  
   <!-- Для ArduPilot -->
-  <!-- <arg name="odom_topic" value="/mavros/local_position/odom" /> -->
+  <arg name="odom_topic" value="/mavros/local_position/odom" if="$(arg ap_type)"/>
+  <!-- Для PX4 -->
+  <arg name="odom_topic" value="/mavros/odometry/in" unless="$(arg ap_type)"/>
+  
 
   <!-- Топик облака точек -->
   <arg name="cloud_topic" default="/rtabmap/cloud_map"/>
@@ -89,6 +91,7 @@
   <node pkg="fast_planner_server" type="fast_planner_server_node.py" name="fast_planner_server_node" output="log">
     <param name="enable_althold" value="$(arg enable_althold)"/>  
     <param name="altitude" value="$(arg altitude)"/>
+    <param name="ap_type" value="$(arg ap_type)"/>
   </node>
 
 </launch>
