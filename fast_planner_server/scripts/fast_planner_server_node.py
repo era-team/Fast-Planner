@@ -11,7 +11,6 @@ from takeoff_common.takeoffpy import MavController, AutoPilot
 from fast_planner_server.msg import (
     FastPlannerAction,
     FastPlannerFeedback,
-    FastPlannerGoal,
     FastPlannerResult,
 )
 
@@ -51,16 +50,18 @@ class FastPlannerActionServer:
         self.error_dist_threshold = 0.01
 
     def send_traj_point(self):
-        # TODO: Добавить параметр holonomic
-
         """Отправляет точку траектории дрону"""
-        self.drone.take_pos(
+        if self.ap_type == AutoPilot.PX4:
+            self.drone.take_pos(
             self.traj_msg.position.x,
             self.traj_msg.position.y,
             self.traj_msg.position.z,
             self.traj_msg.yaw,
-        )
+            )
+        else:
+            self.drone.send_vel(self.traj_msg.velocity.x, self.traj_msg.velocity.y, self.traj_msg.velocity.z, self.traj_msg.yaw_dot)
 
+        # TODO: Добавить параметр holonomic        
         # self.drone.take_position(
         #     self.traj_msg.position.x,
         #     self.traj_msg.position.y,
@@ -73,6 +74,7 @@ class FastPlannerActionServer:
         if hasattr(self, "drone"):
             if self.drone.is_landed:
                 self.drone.takeoff(height=self.altitude)
+        # TODO: учитывать, что дрон моджет не взлететь
         # Запоминаем предыдущее положение дрона
         self.old_pos = self.drone.local_position.pose.position
         # Запоминаем цель
@@ -103,9 +105,10 @@ class FastPlannerActionServer:
         # - нет активной цели
         # - дрон находится в воздухе
         # - включен режим удержания высоты
-        if not self.remapper_mode:
-            if not (self.server.is_active() and self.drone.is_landed):
-                if self.enable_althold:
+
+        if self.ap_type == AutoPilot.PX4 and self.enable_althold:
+            if not self.remapper_mode:
+                if not (self.server.is_active() and self.drone.is_landed):
                     # Удерживаем высоту
                     self.drone.take_altitude(self.altitude)
 
@@ -150,10 +153,14 @@ class FastPlannerActionServer:
                     self._result.success = True
                     self._result.error = False
                     self.server.set_succeeded(self._result)
+                    if self.ap_type == AutoPilot.ArduPilot:
+                        self.drone.send_vel(0,0,0,0)
                 elif is_error:  # Если произошла ошибка
                     self._result.success = False
                     self._result.error = True
                     self.server.set_succeeded(self._result)
+                    if self.ap_type == AutoPilot.ArduPilot:
+                        self.drone.send_vel(0,0,0,0)
                 else:  # Летим в штатном режиме
                     # Публикуем feedback
                     self._feedback.goal_distance = goal_dist
@@ -178,8 +185,7 @@ class FastPlannerActionServer:
         self.server.preempt_callback = self.preempt_cb
 
         # Создаем дрона
-        self.drone = MavController.create_controller(
-            self.ap_type, use_vision_odometry=self.use_vision_odometry
+        self.drone = MavController.create_controller(ap_type=self.ap_type, use_vision_odometry=self.use_vision_odometry
         )
 
         # Создаем publisher цели для fast-planner'а
