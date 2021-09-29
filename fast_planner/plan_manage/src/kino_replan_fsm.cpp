@@ -39,6 +39,11 @@ void KinoReplanFSM::init(ros::NodeHandle& nh) {
   nh.param("fsm/thresh_replan", replan_thresh_, -1.0);
   nh.param("fsm/thresh_no_replan", no_replan_thresh_, -1.0);
 
+  // Параметры блокировки высоты
+  nh.param("fsm/use_height_lock", use_height_lock_, false);
+  nh.param("fsm/height_lock", height_lock_, 1.5);
+
+
   nh.param("fsm/waypoint_num", waypoint_num_, -1);
   for (int i = 0; i < waypoint_num_; i++) {
     nh.param("fsm/waypoint" + to_string(i) + "_x", waypoints_[i][0], -1.0);
@@ -71,7 +76,15 @@ void KinoReplanFSM::waypointCallback(const nav_msgs::PathConstPtr& msg) {
   trigger_ = true;
 
   if (target_type_ == TARGET_TYPE::MANUAL_TARGET) {
-    end_pt_ << msg->poses[0].pose.position.x, msg->poses[0].pose.position.y, 1.0;
+    double height = msg->poses[0].pose.position.z;
+
+    if (use_height_lock_)
+      height = height_lock_;
+
+    end_pt_ << msg->poses[0].pose.position.x, msg->poses[0].pose.position.y, height;
+
+    // end_pt_ << msg->poses[0].pose.position.x, msg->poses[0].pose.position.y, msg->poses[0].pose.position.z;
+
 
   } else if (target_type_ == TARGET_TYPE::PRESET_TARGET) {
     end_pt_(0)  = waypoints_[current_wp_][0];
