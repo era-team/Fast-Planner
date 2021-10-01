@@ -14,6 +14,10 @@ class FastPlannerActionCient:
     _client_name = "fast_planner_client"
 
     def __init__(self):
+        # Высота точки цели
+        self.altitude = rospy.get_param("~altitude", 1.0)
+        # Ожидать ли достижения цели
+        self.wait_result = rospy.get_param("~wait_result", False)
         # Создаем action-клиента
         self.client = SimpleActionClient("fast_planner_server", FastPlannerAction)
         # Ожидаем сервер
@@ -30,13 +34,14 @@ class FastPlannerActionCient:
             msg (geometry_msgs.msg.PoseStamped): цель
         """
         # Задаем высоту всем целям в 1.5 метра
-        msg.pose.position.z = 1.5
+        msg.pose.position.z = self.altitude
         # Отправляем цель в action-сервер
         self.client.send_goal(msg)
-        # Ждем результата
-        self.client.wait_for_result()
-        # Запрашиваем результат
-        self.client.get_result()
+        if self.wait_result:
+            # Ждем результата
+            self.client.wait_for_result()
+            # Запрашиваем результат
+            self.client.get_result()
 
 
 if __name__ == "__main__":
